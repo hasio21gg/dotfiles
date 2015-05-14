@@ -150,10 +150,6 @@ nnoremap sh <C-w>h
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
 nnoremap sl <C-w>l
-nnoremap <S-Left> <C-w>h
-nnoremap <S-Down> <C-w>j
-nnoremap <S-Up> <C-w>k
-nnoremap <S-Right> <C-w>l
 " ウインドウ入替
 nnoremap sH <C-w>H
 nnoremap sJ <C-w>J
