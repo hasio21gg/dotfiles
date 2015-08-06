@@ -1,0 +1,62 @@
+# -------------------------------------------------------------------
+# パッケージID  : git-unyou
+# パッケージ名  : git運用スクリプト関数集
+# 機能概要      :
+#
+# -------------------------------------------------------------------
+# 改訂                       変更理由    担当者
+# 番号 バージョン  変更日    案件/問題   氏名         変更内容
+# 0001 V1.000    2014/12/05              H.HASHIMOTO  初版
+# -------------------------------------------------------------------
+# シェル定義
+function usage(){
+cat <<EOF
+git運用スクリプト関数集
+
+以下が利用できます
+
+git_diff_archive
+	説明	実行位置にあるリポジトリよりエクスポート(git archive)を行う
+	引数の指定により
+	・完全…引数なし
+	・差分
+	※現在、日本語ファイル名がある場合正しく処理されない→引数は指定しない
+	引数1	世代数。HEADからの世代数差分が得られる
+	[0-9]*：数値判断
+	以外：世代表記文字(HEAD,HEAD^)
+	引数2	指定あれば引数1から引数2への差分を出す
+	世代表記文字(HEAD,HEAD^)
+EOF
+}
+function git_diff_archive(){
+	local diff=""
+	local h="HEAD"
+	if [ $# -eq 1 ]; then
+		if expr "$1" : '[0-9]*$' > /dev/null ; then
+			diff="HEAD HEAD~${1}"
+		else
+			diff="HEAD ${1}"
+		fi
+	elif [ $# -eq 2 ]; then
+		diff="${1} ${2}"
+		h=$1
+	fi
+
+	if [ "$diff" != "" ]; then
+		diff="git diff --diff-filter=D --name-only ${diff}"
+	fi
+
+	URL=`git config remote.origin.url | sed -e "s/.\+\/\(\(.\+\)\(\.git\)*\)$/\2/"`
+	#echo ${URL}
+	EXPORTDIR=/d/export
+	#git archive --format=zip --prefix=root/ $h `eval $diff` -o archive.zip
+	if [ -d ${EXPORTDIR} ]; then
+		rm -rf ${EXPORTDIR}/${URL}
+		git archive --worktree-attributes --prefix=${URL}/ $h `eval $diff` | tar -x -C ${EXPORTDIR}
+	else
+		echo "NOT FOUND ${EXPORTDIR}."
+		echo "MKDIR ${EXPORTDIR}."
+		mkdir ${EXPORTDIR}
+	fi
+}
+
