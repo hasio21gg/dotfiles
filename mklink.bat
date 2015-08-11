@@ -1,3 +1,4 @@
+mklink %HOMEPATH%"\_netrc" %HOMEPATH%"\dotfiles\.netrc"
 mklink %HOMEPATH%"\_vimrc" %HOMEPATH%"\dotfiles\.vimrc"
 ::mklink %HOMEPATH%"\.vimrc" %HOMEPATH%"\dotfiles\.vimrc"
 mklink %HOMEPATH%"\.bash_profile" %HOMEPATH%"\dotfiles\.bash_profile"

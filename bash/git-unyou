@@ -9,6 +9,13 @@
 # 0001 V1.000    2014/12/05              H.HASHIMOTO  初版
 # -------------------------------------------------------------------
 # シェル定義
+function usagea(){
+cat <<EOF
+以下が利用できます
+git_diff_archive
+
+EOF
+}
 function usage(){
 cat <<EOF
 git運用スクリプト関数集
