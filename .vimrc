@@ -16,6 +16,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "NeoBundle 'Shougo/neosnippet.vim'
 "NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'fholgado/minibufexpl.vim'
+"NeoBundle 'cohama/agit.vim'
 NeoBundle 'tpope/vim-fugitive'
 " You can specify revision/branch/tag.
 "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -80,6 +81,7 @@ set directory=~/vimfiles/Swaps
 " Swapは使わない
 set noswapfile
 set tabstop=4
+set shiftwidth=4
 "検索時に大文字この字を区別しない
 set ignorecase
 "検索語に大文字を混ぜると検索時に大文字を区別する
@@ -103,7 +105,7 @@ highlight Comment ctermfg=gray
 	set encoding=cp932
 	set termencoding=cp932
 	set fileencoding=utf-8
-	set fileencodings=utf-8,cp932
+	set fileencodings=utf-8,utf-16le,cp932
 "endif
 "日付けを変数に格納しておく
 "let $TODAY = strftime('%Y%m%d')
@@ -145,4 +147,15 @@ set statusline+=%P		"ファイル内の何％の位置にあるか
 
 set statusline+=%{fugitive#statusline()}
 let g:neosnippet#snippets_directory='~/.vim/bundle/neosnippet-snippets/snippets/'
+"-----------------------------
+"　コマンド履歴
+" F5 キーでコマンド履歴を開く
+" F6 キーで検索履歴を開く
+nnoremap <F5> <CR>q:
+nnoremap <F6> <CR>q/
+" q:、q/、q? は無効化
+nnoremap q: <NOP>
+nnoremap q/ <NOP>
+nnoremap q? <NOP>
+"-----------------------------
 filetype on

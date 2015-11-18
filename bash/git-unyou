@@ -9,14 +9,15 @@
 # 0001 V1.000    2014/12/05              H.HASHIMOTO  初版
 # -------------------------------------------------------------------
 # シェル定義
-function usagea(){
+function usa(){
 cat <<EOF
 以下が利用できます
 git_diff_archive
-
+git_yet_push_commits
+git_yet_push_files
 EOF
 }
-function usage(){
+function usav(){
 cat <<EOF
 git運用スクリプト関数集
 
@@ -33,7 +34,19 @@ git_diff_archive
 	以外：世代表記文字(HEAD,HEAD^)
 	引数2	指定あれば引数1から引数2への差分を出す
 	世代表記文字(HEAD,HEAD^)
+git_yet_push_commits
+	説明	コミット済み、未プッシュのコミット一覧
+git_yet_push_files
+	説明	コミット済み、未プッシュのファイル一覧
 EOF
+}
+function git_yet_push_commits(){
+	local h="HEAD"
+	git log @{u}..$h --format="- %h %cn %s"
+}
+function git_yet_push_files(){
+	local h="HEAD"
+	git diff @{u}..$h --name-only
 }
 function git_diff_archive(){
 	local diff=""
@@ -53,12 +66,15 @@ function git_diff_archive(){
 		diff="git diff --diff-filter=D --name-only ${diff}"
 	fi
 
+	echo DIFF:${diff}
+
 	URL=`git config remote.origin.url | sed -e "s/.\+\/\(\(.\+\)\(\.git\)*\)$/\2/"`
 	#echo ${URL}
 	EXPORTDIR=/d/export
 	#git archive --format=zip --prefix=root/ $h `eval $diff` -o archive.zip
 	if [ -d ${EXPORTDIR} ]; then
 		rm -rf ${EXPORTDIR}/${URL}
+		#echo 'git archive --worktree-attributes --prefix=${URL}/ $h `eval $diff` | tar -x -C ${EXPORTDIR}'
 		git archive --worktree-attributes --prefix=${URL}/ $h `eval $diff` | tar -x -C ${EXPORTDIR}
 	else
 		echo "NOT FOUND ${EXPORTDIR}."
