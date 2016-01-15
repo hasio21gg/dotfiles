@@ -20,6 +20,7 @@ NeoBundle 'fholgado/minibufexpl.vim'
 NeoBundle 'tpope/vim-fugitive'
 " You can specify revision/branch/tag.
 "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+"NeoBundle 't9md/vim-quickhl'
 " Required:
 call neobundle#end()
 " Required:
@@ -105,7 +106,7 @@ highlight Comment ctermfg=gray
 	set encoding=cp932
 	set termencoding=cp932
 	set fileencoding=utf-8
-	set fileencodings=utf-8,utf-16le,cp932
+	set fileencodings=utf-8,utf-16le,cp932,euc-jp
 "endif
 "日付けを変数に格納しておく
 "let $TODAY = strftime('%Y%m%d')
@@ -115,6 +116,7 @@ highlight Comment ctermfg=gray
 nmap <Esc><Esc><Esc> :nohlsearch<CR><Esc>
 inoremap <silent> jj <ESC>
 set cursorline
+let ff_table = {'dos' : 'CR+LF', 'unix' : 'LF', 'mac' : 'CR' }
 " ステータスライン
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -127,9 +129,11 @@ set statusline+=%m		" %m 修正フラグ
 set statusline+=%r		" %r 読み込み専用フラグ
 set statusline+=%h		" %h ヘルプバッファフラグ
 set statusline+=%w		" %w プレビューウィンドウフラグ
+set statusline+=[%{ff_table[&ff]}]	" %w プレビューウィンドウフラグ
+set statusline+=[%{&fenc}]	"
 set statusline+=%y		" バッファ内のファイルのタイプ
 set statusline+=\ 		" 空白スペース
-if winwidth(0)>130
+if winwidth(0)>100
    set statusline+=%F	"バッファ内のファイルのフルパス
 else
    set statusline+=%t	"ファイル名のみ

@@ -70,7 +70,8 @@ function git_diff_archive(){
 
 	URL=`git config remote.origin.url | sed -e "s/.\+\/\(\(.\+\)\(\.git\)*\)$/\2/"`
 	#echo ${URL}
-	EXPORTDIR=/d/export
+	#EXPORTDIR=/d/export/
+	EXPORTDIR=/D/DatDir02/Dat300/Deploy/
 	#git archive --format=zip --prefix=root/ $h `eval $diff` -o archive.zip
 	if [ -d ${EXPORTDIR} ]; then
 		rm -rf ${EXPORTDIR}/${URL}
