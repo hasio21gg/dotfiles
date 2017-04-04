@@ -18,9 +18,12 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'fholgado/minibufexpl.vim'
 "NeoBundle 'cohama/agit.vim'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'PProvost/vim-ps1'
+NeoBundle 'vimtaku/hl_matchit.vim.git'
 " You can specify revision/branch/tag.
 "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
 "NeoBundle 't9md/vim-quickhl'
+"NeoBundle 'vim-scripts/dbext.vim'
 " Required:
 call neobundle#end()
 " Required:
@@ -151,6 +154,18 @@ set statusline+=%P		"ファイル内の何％の位置にあるか
 
 set statusline+=%{fugitive#statusline()}
 let g:neosnippet#snippets_directory='~/.vim/bundle/neosnippet-snippets/snippets/'
+
+"--------------------------------------------------
+" dbextプラグイン用
+" 環境に合わせてクライアントプログラムを変更
+" (ver.20.0 からはデフォルトでsqlite3)
+"let g:dbext_default_SQLITE_bin = 'sqlplus'
+" プロファイルの定義
+"let g:dbext_default_profile_MySQL_test = 'type=SQLSRV:integratedlogin=1:dbname=myDB'
+"let g:dbext_default_profile_SQLServer_test = 'type=SQLSRV:integratedlogin=1:dbname=myDB'
+"let g:dbext_default_profile_SACAS_test = 'type=ORA:srvname=MONOSKJT:user=SACAS:passwd=SACAS00'
+"デフォルトで使用するプロファイルを指定
+"let g:dbext_default_profile = 'SACAS_test'
 "-----------------------------
 "　コマンド履歴
 " F5 キーでコマンド履歴を開く

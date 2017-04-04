@@ -144,7 +144,36 @@ endif
 if has('printer')
   if has('win32')
     "set printfont=MS_Mincho:h9:cSHIFTJIS
-    set printfont=MS_Gothic:h9:cSHIFTJIS
+    set printfont=Migu_1M:h7:cSHIFTJIS
+
+set printheader=
+set printoptions=
+
+"set printoptions+=header:0  " ヘッダーを印刷しない
+"set printoptions+=header:1  " ヘッダー、本文間にスペースを空けない
+set printoptions+=header:2   " ヘッダー、本文間に1行入れる
+
+"set printheader=-%N-                                     " -ページ-
+"set printheader=%t                                       " ファイル名
+"set printheader=%F                                       " ファイル名（パス含む）
+set printheader=%t\ -%N-                                  " ファイル名 -ページ-
+"set printheader=%{strftime('%Y/%m/%d\ %H:%M')}           " 最終印刷日時
+"set printheader=山田\ 太郎                               " 最終保存者、作成者
+"set printheader=山田\ 太郎\ %N\ %{strftime('%Y/%m/%d')}  " 作成者 ページ 日付
+"set printheader=社外秘\ %N\ %{strftime('%Y/%m/%d')}      " 社外秘 ページ 日付
+
+" ヘッダーの位置
+let &printheader = &printheader . "%="   " 左寄せ
+"let &printheader = "%=" . &printheader  " 右寄せ
+
+"---------------------------------------------------------------------------
+" 印刷設定
+"---------------------------------------------------------------------------
+" 余白スペース
+" [left 左]  [right 右]  [top 上]  [bottom 下]
+" [in インチ]  [pt 1/72インチ]  [mm ミリメートル]  [pc 用紙サイズに対する割合]
+set printoptions+=left:15mm,right:10mm,top:10mm,bottom:10mm
+
   endif
 endif
 " 行番号付きで印刷
@@ -174,5 +203,10 @@ set tags=.tags;
 "ESC-ESC-ESC
 nmap <Esc><Esc><Esc> :nohlsearch<CR><Esc>
 
+"SHIFT+F1 開いているファイルをエクスプローラで開く
+map <S-F1> :silent ! start %:h<CR>
+
 " 自作コマンド類
-:source $HOME\vimfiles\script\ExpP.vim
+:source $HOME\vimfiles\script\MyParse.vim
+:source $HOME\vimfiles\script\Listener.vim
+
