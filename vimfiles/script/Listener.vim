@@ -8,7 +8,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 command! Test call s:Test()
-command! ListenerOra9 call s:Ora9()
+command! ListenerOra9 call s:Ora9Proc1()
 command! ListenerOra11 call s:Ora11()
 command! ListenerOra9Macro call s:Ora9Macro()
 command! ListenerOra11Macro call s:Ora11Macro()
@@ -31,9 +31,11 @@ function! s:Ora9(YYYY, MM)
 	"let YYYY = input("年")
 	let MM   = a:MM
 	let YYYY = a:YYYY
+	echom YYYY . "年" . MM . "月"
 	let TMP0FILE = "tmp0_" . YYYY . MM . "_" . BUFFER_FILE_NAME . ".txt"
 	let TMP1FILE = "tmp1_" . YYYY . MM . "_" . BUFFER_FILE_NAME . ".txt"
 	let OUT1FILE = YYYY . MM . "_" . BUFFER_FILE_NAME . ".txt"
+	let OUT2FILE = YYYY . MM . "_" . BUFFER_FILE_NAME . ".2.txt"
 
 	let MM = substitute(MM, "01", "JAN" ,"g")
 	let MM = substitute(MM, "02", "FEB" ,"g")
@@ -104,6 +106,7 @@ function! s:Ora9(YYYY, MM)
 			"%s/Microsoft Office/Microsoft_Office/ge
 			"%s/SQL Developer/SQL_Developer/ge
 			%s/\v(\\*)(\w+) (\w+)(\\*)/\1\2_\3\4/ge
+			%s/\(Microsoft_SQL\) \(Server\)/\1_\2/ge
 			%s/CONNECT_DATA=//e
 			%s/ CID= //e
 			%s/ PORT=\w\+ //e
@@ -113,8 +116,12 @@ function! s:Ora9(YYYY, MM)
 			%s/ \+/\t/ge
 			%s/\t\+/\t/ge
 			%s/\v(HOST\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))/\1\t\2/e
+			%s/\(PROGRAM=\)\t/\1NULL\t/e
+			%s/\t\(PROGRAM=\w\+\)\(.\+\t\)\(SERVICE_NAME=\w\+\t\)/\t\3\1\2/ei
+			"execute ":w! " . OUT2FILE
+			"execute ":e! " . OUT2FILE
 			%s/SID=//e
-			%s/SERVICE_NAME=//e
+			%s/SERVICE_NAME=//ei
 			%s/PROGRAM=//e
 			%s/HOST=//ge
 			%s/USER=//e
@@ -414,6 +421,27 @@ function! s:Ora11Macro()
 	call s:Ora11Macro1("listener.20160208.log")
 	call s:Ora11Macro1("listener.20160209.log")
 	call s:Ora11Macro1("listener.log")
+endfunction
+"--------------------------------------------------------------------------------
+" 関数名： 
+" 機　能： 
+"--------------------------------------------------------------------------------
+function! s:Ora9Proc1()
+	let inp =  input("1)抽出しますか?[Y/N]")
+	if inp == "Y"
+		let YYYYMM = ""
+		let YYYYMM_O = ""
+		while YYYYMM != "Q"
+			let QUEST = YYYYMM_O == "" ? "*" : YYYYMM_O
+			let YYYYMM =  input("年月 ?[YYYYMM or Q](" . QUEST . ")")
+		
+			if YYYYMM != "Q"
+			" ファイル名を置換挿入するため、\を\\にしておく
+				call s:Ora9(strpart(YYYYMM, 0, 4), strpart(YYYYMM, 4, 2))
+			endif
+			let YYYYMM_O = YYYYMM
+		endwhile
+	endif
 endfunction
 "--------------------------------------------------------------------------------
 " 関数名： 
