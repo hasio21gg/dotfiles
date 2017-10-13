@@ -19,6 +19,12 @@ mkdir -p ~/.vim/rc
 nkf -Lu -w ~/dotfiles/vim/rc/dein.toml > ~/.vim/rc/dein.toml 
 nkf -Lu -w ~/dotfiles/vim/rc/dein_lazy.toml > ~/.vim/rc/dein_lazy.toml
 
-mkdir ~/vimfiles/Backup
-mkdir ~/vimfiles/script
-mkdir ~/vimfiles/Undo
+mkdir -p ~/vimfiles/Backup
+mkdir -p ~/vimfiles/script
+mkdir -p ~/vimfiles/Undo
+
+cat << EOS
+set encoding=utf-8
+set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileformats=unix,dos,mac
+EOS >> ~/.vimrc
