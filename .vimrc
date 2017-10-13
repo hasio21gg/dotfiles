@@ -178,6 +178,12 @@ set statusline+=%{fugitive#statusline()}
 "デフォルトで使用するプロファイルを指定
 "let g:dbext_default_profile = 'SACAS_test'
 "-----------------------------
+" ミニバッファ
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplModSelTarget = 1
+
 "　コマンド履歴
 " F5 キーでコマンド履歴を開く
 " F6 キーで検索履歴を開く
