@@ -1,11 +1,3 @@
-if has('win32')
-elseif has('mac')
-else
-	set encoding=utf-8
-	set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
-	set fileformats=unix,dos,mac
-endif
-
 if &compatible
   set nocompatible
 endif
@@ -91,7 +83,11 @@ function! s:GetHighlight(hi)
   let hl = substitute(hl, 'xxx', '', '')
   return hl
 endfunction
-
+elseif has('mac')
+else
+	set encoding=utf-8
+	set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+	set fileformats=unix,dos,mac
 "================================================================
 " バックアップファイルの保管先
 set backupdir=~/vimfiles/Backup
@@ -120,12 +116,17 @@ syntax on
 highlight Comment ctermfg=gray
 " 新規ファイル時はUTF8
 " 既存ファイルは自動
-"if has('win32')
+if has('win32')
 	set encoding=cp932
 	set termencoding=cp932
 	set fileencoding=utf-8
 	set fileencodings=utf-8,utf-16le,cp932,euc-jp
-"endif
+elseif has('mac')
+else
+	set encoding=utf-8
+	set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+	set fileformats=unix,dos,mac
+endif
 "日付けを変数に格納しておく
 "let $TODAY = strftime('%Y%m%d')
 "let $NOW = strftime('%Y%m%d%H%M%S')
