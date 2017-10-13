@@ -1,0 +1,16 @@
+# 基本は github.com のレポジトリーを指定するだけ
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'fholgado/minibufexpl.vim'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'vimtaku/hl_matchit.vim.git'
+
+[[plugins]]
+repo = 'cocopon/vaffle.vim.git'
+
