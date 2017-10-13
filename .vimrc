@@ -83,11 +83,6 @@ function! s:GetHighlight(hi)
   let hl = substitute(hl, 'xxx', '', '')
   return hl
 endfunction
-elseif has('mac')
-else
-	set encoding=utf-8
-	set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
-	set fileformats=unix,dos,mac
 "================================================================
 " バックアップファイルの保管先
 set backupdir=~/vimfiles/Backup
