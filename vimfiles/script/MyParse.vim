@@ -15,6 +15,7 @@ command! ExpParse5 call s:exp_type5()
 command! ImpParse1 call s:imp_type1()
 command! ImpParse2 call s:imp_type2()
 command! PlmParse1 call s:plm_type1()
+command! CaclParse1 call s:cacl_type1()
 
 "--------------------------------------------------------------------------------
 " 関数名： exp_type1
@@ -377,6 +378,43 @@ function! s:plm_type1()
 	catch
 		echo v:exception
 		echo "Undoします[2]"
+		undo
+		return
+	endtry
+endfunction
+
+function! s:cacl_type1()
+	let BUFFER_FILE_NAME     = expand("%")
+	let SCHEME_NAME          = expand("<cword>")
+	echom "[SCHEME_NAME]"      . SCHEME_NAME
+	echom "[BUFFER_FILE_NAME]" . BUFFER_FILE_NAME
+	"==================================================
+	" 範囲特定処理
+	"==================================================
+	try
+		%s/\(共有名\)\s\+/\1\t/ 
+		%s/\(ﾊﾟｽ\)\s\+/\1\t/ 
+		%s/\(注釈\)\s\+/\1\t/ 
+		%s/\(最大ﾕｰｻﾞｰ数\)\s\+/\1\t/ 
+		%s/\(ﾕｰｻﾞｰ名\)\s\+/\1\t/ 
+		%g/ｺﾏﾝﾄﾞは正常に終了しました。/d
+		%g/^$/d
+		try
+			%s/\s\{3,\}$\n\s\+/\t/g
+		endtry
+		try
+			%s/\s\{3,\}/\t/g
+		endtry
+		%s/\n\(ﾊﾟｽ\)/\t\1/
+		%s/\n\(注釈\)/\t\1/ 
+		%s/\n\(最大ﾕｰｻﾞｰ数\)/\t\1/ 
+		%s/\n\(ﾕｰｻﾞｰ名\)/\t\1/
+		execute "%s/^/" . BUFFER_FILE_NAME . "\t/"
+		execute "w ..\out\" . substitute(BUFFER_FILE_NAME,"_NET_SHARE_DETAIL","","g")
+		bd!
+	catch
+		echo v:exception
+		echo "Undoします[1]"
 		undo
 		return
 	endtry

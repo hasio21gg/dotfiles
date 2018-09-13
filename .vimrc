@@ -7,6 +7,8 @@ let s:dein_dir = expand('~/.vim/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
+set runtimepath+=$VIM
+set pythonthreedll=$VIM/python3/python36.dll
 
 " 設定開始
 if dein#load_state(s:dein_dir)
@@ -129,7 +131,7 @@ endif
 " ESC-ESC-ESC で検索後ハイライトをリセット
 nmap <Esc><Esc><Esc> :nohlsearch<CR><Esc>
 inoremap <silent> jj <ESC>
-set cursorline
+"set cursorline
 let ff_table = {'dos' : 'CR+LF', 'unix' : 'LF', 'mac' : 'CR' }
 " ステータスライン
 " Plugin key-mappings.
@@ -164,6 +166,12 @@ set statusline+=\ \ 	"空白スペース2個
 set statusline+=%P		"ファイル内の何％の位置にあるか
 
 set statusline+=%{fugitive#statusline()}
+
+"vim-airline
+"let g:airline_theme = 'molokai'
+let g:airline_theme = 'papercolor'
+
+set laststatus=2
 ""let g:neosnippet#snippets_directory='~/.vim/bundle/neosnippet-snippets/snippets/'
 
 "--------------------------------------------------
