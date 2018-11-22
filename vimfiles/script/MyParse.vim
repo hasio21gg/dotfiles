@@ -15,7 +15,9 @@ command! ExpParse5 call s:exp_type5()
 command! ImpParse1 call s:imp_type1()
 command! ImpParse2 call s:imp_type2()
 command! PlmParse1 call s:plm_type1()
-command! CaclParse1 call s:cacl_type1()
+"command! CaclParse1A call s:cacl_type1A()
+"command! CaclParse1B call s:cacl_type1B()
+command! CaclParse2 call s:cacl_type2()
 
 "--------------------------------------------------------------------------------
 " 関数名： exp_type1
@@ -383,7 +385,7 @@ function! s:plm_type1()
 	endtry
 endfunction
 
-function! s:cacl_type1()
+function! s:cacl_type1A()
 	let BUFFER_FILE_NAME     = expand("%")
 	let SCHEME_NAME          = expand("<cword>")
 	echom "[SCHEME_NAME]"      . SCHEME_NAME
@@ -409,9 +411,87 @@ function! s:cacl_type1()
 		%s/\n\(注釈\)/\t\1/ 
 		%s/\n\(最大ﾕｰｻﾞｰ数\)/\t\1/ 
 		%s/\n\(ﾕｰｻﾞｰ名\)/\t\1/
-		execute "%s/^/" . BUFFER_FILE_NAME . "\t/"
-		execute "w ..\out\" . substitute(BUFFER_FILE_NAME,"_NET_SHARE_DETAIL","","g")
-		bd!
+		"execute "%s/^/" . BUFFER_FILE_NAME . "\t/"
+		"execute "w ..\out\" . substitute(BUFFER_FILE_NAME,"_NET_SHARE_DETAIL","","g")
+		"bd!
+	catch
+		echo v:exception
+		echo "Undoします[1]"
+		undo
+		return
+	endtry
+endfunction
+
+function! s:cacl_type1B()
+	let BUFFER_FILE_NAME     = expand("%")
+	let SCHEME_NAME          = expand("<cword>")
+	echom "[SCHEME_NAME]"      . SCHEME_NAME
+	echom "[BUFFER_FILE_NAME]" . BUFFER_FILE_NAME
+	"==================================================
+	" 範囲特定処理
+	"==================================================
+	try
+		%s/\(共有名\)\s\+/\1\t/ 
+		%s/\(パス\)\s\+/\1\t/ 
+		%s/\(注釈\)\s\+/\1\t/ 
+		%s/\(最大ユーザー数\)\s\+/\1\t/ 
+		%s/\(ユーザー \)\s\+/\1\t/ 
+		%g/キャッシュ/d
+		%g/コマンドは正常に終了しました。/d
+		v/\S/d
+		"%g/^$/d
+		"try
+		"	%s/\s\{3,\}$\n\s\+/\t/g
+		"endtry
+		"try
+		"	%s/\s\{3,\}/\t/g
+		"endtry
+		%s/\n\(パス\)/\t\1/
+		%s/\n\(注釈\)/\t\1/ 
+		%s/\n\(最大ユーザー数\)/\t\1/ 
+		%s/\n\(ユーザー\)/\t\1/
+		"execute "%s/^/" . BUFFER_FILE_NAME . "\t/"
+		"execute "w ..\out\" . substitute(BUFFER_FILE_NAME,"_NET_SHARE_DETAIL","","g")
+		"bd!
+	catch
+		echo v:exception
+		echo "Undoします[1]"
+		undo
+		return
+	endtry
+endfunction
+
+function! s:cacl_type2()
+	let BUFFER_FILE_NAME     = expand("%")
+	echom "[BUFFER_FILE_NAME]" . BUFFER_FILE_NAME
+	try
+		"execute "/\. " . SCHEME_NAME
+		execute "/^-\\+"
+		" 先頭から検索できた位置まで削除する
+		g//norm!Vggd
+		execute "/コマンドは正常に終了しました"
+		" 検索できた位置から末尾まで削除する
+		g//norm!VGd
+		normal! gg
+		%s/\s\+\([C-Zc-z]:\)/\t\1/
+		%s/\s\+\(\(Remote IPC\)\s\+\)/\t\2/
+		%s/\s\+\(\(Default share\)\s\+\)/\t\2/
+		%s/\s\+\(\(Remote Admin\)\s\+\)/\t\2/
+		%s/\s\+$//
+		%s/^\s\+/\t/
+		%s/$\n\t/\t/
+		v/\S/d
+		sort
+		
+		let OUTPUTFILE = substitute(BUFFER_FILE_NAME, "NET_SHARE", "CACLS_LIST", "g")
+		echom "[OUTPUTFILE]" . OUTPUTFILE
+		let inp =  input("ファイル作成しますか?[Y/N]")
+		if inp == "Y"
+			execute "w! " . OUTPUTFILE
+			undo
+			bd!
+			execute "e " . OUTPUTFILE
+		endif
 	catch
 		echo v:exception
 		echo "Undoします[1]"

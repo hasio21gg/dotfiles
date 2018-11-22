@@ -142,7 +142,7 @@ call delete(TMP0FILE)
 call delete(TMP1FILE)
 
 endfunction
-function LParse001(BASEFILE, SAVEFILE, YYYY)
+function! LParse001(BASEFILE, SAVEFILE, YYYY)
 
 		let inp =  input("3)éwíËîNíäèoÇµÇ‹Ç∑Ç©?[Y/N]")
 	if inp == "Y"
