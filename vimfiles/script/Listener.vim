@@ -105,6 +105,7 @@ function! s:Ora9(YYYY, MM)
 			"%s/Program Files/Program_Files/ge
 			"%s/Microsoft Office/Microsoft_Office/ge
 			"%s/SQL Developer/SQL_Developer/ge
+			%s/JDBC Thin Client/JDBC_Thin_Client/ge
 			%s/\v(\\*)(\w+) (\w+)(\\*)/\1\2_\3\4/ge
 			%s/\(Microsoft_SQL\) \(Server\)/\1_\2/ge
 			%s/CONNECT_DATA=//e
