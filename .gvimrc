@@ -181,6 +181,7 @@ set printoptions=number:y
 " 行番号無しで印刷
 "set printoptions=number:n
 " Copyright (C) 2007 KaoriYa/MURAOKA Taro
+
 "シンタックス追加
 "SQL:*.prc,*.tst
 augroup filetypedetect
@@ -191,12 +192,41 @@ augroup filetypedetect
   au! BufRead,BufNewFile *.bdy setfiletype plsql
   au! BufRead,BufNewFile *.tst setfiletype sqloracle
   au! BufRead,BufNewFile *.ctl setfiletype sqloracle
+  au! BufRead,BufNewFile *.yml setfiletype ansible
+  au! BufRead,BufNewFile *.yaml setfiletype ansible
 augroup END
 
 "バッファ一覧をトップに表示する
 ":let g:miniBufExplMapWindowNavVim = 1
 ":let g:miniBufExplMapWindowNavArrows = 1
 ":let g:miniBufExplMapCTabSwitchBuffs = 1
+"
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#whitespace#mixed_indent_algo = 1
+"let g:airline_theme = 'tomorrow'
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '≫'
+"let g:airline_left_sep = '?'
+let g:airline_right_sep = '≪'
+"let g:airline_right_sep = '?'
+"let g:airline_symbols.crypt = '??'
+"let g:airline_symbols.linenr = '?'
+"let g:airline_symbols.linenr = '?'
+"let g:airline_symbols.linenr = '?'
+let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.maxlinenr = ''
+"let g:airline_symbols.maxlinenr = '?'
+"let g:airline_symbols.branch = '?'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'T'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.spell = '?'
+"let g:airline_symbols.notexists = '?'
+let g:airline_symbols.whitespace = 'Ξ'
 
 "TAGS
 set tags=.tags;
@@ -206,7 +236,27 @@ nmap <Esc><Esc><Esc> :nohlsearch<CR><Esc>
 "SHIFT+F1 開いているファイルをエクスプローラで開く
 map <S-F1> :silent ! start %:h<CR>
 
+"vim-lsp
+"LSPのLint機能を無効にするオプション
+let g:lsp_diagnostics_enabled = 0
+" debug
+" ログ出力用の設定
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/vim-lsp.log')
+let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+
+"LSP Python
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
 " 自作コマンド類
 :source $HOME\vimfiles\script\MyParse.vim
 :source $HOME\vimfiles\script\Listener.vim
+:source $HOME\vimfiles\script\FlowLog.vim
+:source $HOME\vimfiles\script\Datapump.vim
 

@@ -5,7 +5,8 @@ endif
 let s:dein_dir = expand('~/.vim/dein')
 " dein.vim 本体
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+"set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=$HOME/.vim/dein/repos/github.com/Shougo/dein.vim
 
 set runtimepath+=$VIM
 set pythonthreedll=$VIM/python3/python36.dll
@@ -165,13 +166,17 @@ set statusline+=%V	 	"画面上の何列目にカーソルがあるか
 set statusline+=\ \ 	"空白スペース2個
 set statusline+=%P		"ファイル内の何％の位置にあるか
 
-set statusline+=%{fugitive#statusline()}
-
-"vim-airline
-"let g:airline_theme = 'molokai'
-let g:airline_theme = 'papercolor'
+set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
 
 set laststatus=2
+
+"vim-airline
+let g:airline_theme = 'molokai'
+let g:airline_theme = 'papercolor'
+let g:lightline = {
+      \ 'colorscheme': 'PaperColor_light',
+      \ }
+
 ""let g:neosnippet#snippets_directory='~/.vim/bundle/neosnippet-snippets/snippets/'
 
 "--------------------------------------------------
@@ -201,5 +206,30 @@ nnoremap <F6> <CR>q/
 nnoremap q: <NOP>
 nnoremap q/ <NOP>
 nnoremap q? <NOP>
+" QuickFix
+"nnoremap [q :cprevious<CR>
+"nnoremap ]q :cnext<CR>
+"nnoremap [Q :<C-u>cfirst<CR>
+"nnoremap ]Q :<C-u>clast<CR>
+
+"inoremap <expr> ,df strftime('%Y/%m/%d %H:%M')
+"inoremap <expr> ,dd strftime('%Y/%m/%d')
+"let weeks = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+"let wday = strftime("%w")
+"inoremap <expr> ,ds strftime('%Y/%m/%d ').weeks[wday]
+
+"
+if has("autocmd")
+	filetype indent on
+	"sw : softtabstop
+	"sts: shiftwidth
+	"ts : tabstop
+	"et : expandtab
+	autocmd FileType json setlocal sw=4 sts=4 ts=4 et
+	autocmd FileType yml  setlocal sw=2 sts=2 ts=2 et
+	autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
+	"autocmd Filetype json let g:indentLine_enabled=0
+endif
+
 "-----------------------------
 filetype on
