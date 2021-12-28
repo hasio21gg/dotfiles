@@ -10,6 +10,7 @@ set cpo&vim
 command! Test call s:Test()
 command! ListenerOra9 call s:Ora9Proc1()
 command! ListenerOra11 call s:Ora11()
+command! ListenerOra19 call s:Ora19()
 command! ListenerOra9Macro call s:Ora9Macro()
 command! ListenerOra11Macro call s:Ora11Macro()
 command! ListenerOra9Macro2 call s:Ora9Macro2()
@@ -198,9 +199,9 @@ function! s:Ora11()
 	%s/^\(\d\{2\}-\)7. /\107/e
 	%s/^\(\d\{2\}-\)8. /\108/e
 	%s/^\(\d\{2\}-\)9. /\109/e
-	%s/^\(\d\{2\}-\)10. /\110/e
-	%s/^\(\d\{2\}-\)11. /\111/e
-	%s/^\(\d\{2\}-\)12. /\112/e
+	%s/^\(\d\{2\}-\)10./\110/e
+	%s/^\(\d\{2\}-\)11./\111/e
+	%s/^\(\d\{2\}-\)12./\112/e
 	" ファイル名を置換挿入するため、\を\\にしておく
 	try
 		%s/^\(\d\{2\}\)-\(\d\{2\}\)-\(\d\{4\}\)\s\(\d\{2\}:\d\{2\}:\d\{2\}\) \* /\3\/\2\/\1\t\4\t/e
@@ -211,6 +212,74 @@ function! s:Ora11()
 		"%s/SQL Developer/SQL_Developer/ge
 		%s/\v(\\*)(\w+) (\w+)(\\*)/\1\2_\3\4/ge
 		%s/JDBC.Thin.Client/JDBC_Thin_Client/ge
+		%s/\(CONNECT_DATA= \)\(SID=\w\+\s\+\)\(CID=\s\+\w\+\)/\1\3/e
+		%s/CONNECT_DATA=//e
+		%s/ CID= //e
+		%s/ PORT=\w\+ //e
+		%s/establish.\+$//e
+		%s/SERVER=\w\+ //e
+		%s/ADDRESS= PROTOCOL=tcp //e
+		%s/ \+/\t/ge
+		%s/\t\+/\t/ge
+		%s/\v(HOST\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))/\1\t\2/e
+		let BUFFER_FILE_NAME=substitute(BUFFER_FILE_NAME,"listener.","listener","")
+		execute ":w! txt\\" . BUFFER_FILE_NAME . ".txt"
+		"undo
+	catch
+		echo v:exception
+		echo "Undoします[2]"
+		undo
+		return
+	endtry
+endfunction
+"--------------------------------------------------------------------------------
+" 関数名： Ora19
+" 機　能： 
+"--------------------------------------------------------------------------------
+function! s:Ora19()
+	let BUFFER_FILE_NAME     = expand("%:r")
+	echom "[BUFFER_FILE_NAME]" . BUFFER_FILE_NAME
+	"==================================================
+	" 範囲特定処理
+	"==================================================
+	try
+		"%g/(HOST=\(\d\{,3\}\.\)\{3\}\d\{,3\})/d
+		"%g/リスニングしています/de
+		%v/(HOST=\(\d\{,3\}\.\)\{3\}\d\{,3\})/d
+	catch
+		echo v:exception
+		echo "Undoします[1]"
+		undo
+		return
+	endtry
+	"==================================================
+	" 解析出力処理
+	"==================================================
+	%s/^\(\d\{2\}-\)JAN/\101/e
+	%s/^\(\d\{2\}-\)FEB/\102/e
+	%s/^\(\d\{2\}-\)MAR/\103/e
+	%s/^\(\d\{2\}-\)APR/\104/e
+	%s/^\(\d\{2\}-\)MAY/\105/e
+	%s/^\(\d\{2\}-\)JUN/\106/e
+	%s/^\(\d\{2\}-\)JUL/\107/e
+	%s/^\(\d\{2\}-\)AUG/\108/e
+	%s/^\(\d\{2\}-\)SEP/\109/e
+	%s/^\(\d\{2\}-\)OCT/\110/e
+	%s/^\(\d\{2\}-\)NOV/\111/e
+	%s/^\(\d\{2\}-\)DEC/\112/e
+	%s/^\(\d\{2\}-\)12./\112/e
+
+	" ファイル名を置換挿入するため、\を\\にしておく
+	try
+		%s/^\(\d\{2\}\)-\(\d\{2\}\)-\(\d\{4\}\)\s\(\d\{2\}:\d\{2\}:\d\{2\}\) \* /\3\/\2\/\1\t\4\t/e
+		%s/[()]/ /ge
+		%s/ \* / /ge
+		"%s/Program Files/Program_Files/ge
+		"%s/Microsoft Office/Microsoft_Office/ge
+		"%s/SQL Developer/SQL_Developer/ge
+		%s/\v(\\*)(\w+) (\w+)(\\*)/\1\2_\3\4/ge
+		%s/JDBC.Thin.Client/JDBC_Thin_Client/ge
+		%s/\(CONNECT_DATA= \)\(SID=\w\+\s\+\)\(CID=\s\+\w\+\)/\1\3/e
 		%s/CONNECT_DATA=//e
 		%s/ CID= //e
 		%s/ PORT=\w\+ //e
