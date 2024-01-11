@@ -6,7 +6,8 @@ colorscheme koehler
 "
 if has('win32')
   " Windows用
-  set guifont=Migu_1M:h9:cSHIFTJIS
+  "set guifont=Migu_1M:h9:cSHIFTJIS
+  set guifont=Migu_1M:h11:cSHIFTJIS
   "set guifont=Migu_2M:h10:cSHIFTJIS
   "set guifont=Migu_1C:h9:cSHIFTJIS
   "set guifont=MS_Gothic:h10:cSHIFTJIS
@@ -246,17 +247,18 @@ let g:lsp_log_file = expand('~/vim-lsp.log')
 let g:asyncomplete_log_file = expand('~/asyncomplete.log')
 
 "LSP Python
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
+""if executable('pyls')
+""    au User lsp_setup call lsp#register_server({
+""        \ 'name': 'pyls',
+""        \ 'cmd': {server_info->['pyls']},
+""        \ 'whitelist': ['python'],
+""        \ })
+""endif
 
 " 自作コマンド類
 :source $HOME\vimfiles\script\MyParse.vim
 :source $HOME\vimfiles\script\Listener.vim
 :source $HOME\vimfiles\script\FlowLog.vim
 :source $HOME\vimfiles\script\Datapump.vim
+:source $HOME\vimfiles\script\FTPLog.vim
 
