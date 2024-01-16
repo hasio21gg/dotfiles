@@ -1,36 +1,42 @@
-if &compatible
-  set nocompatible
+"---------------------------------------------------------------- START dein
+let $CACHE = expand('~/.vim')
+if !($CACHE->isdirectory())
+  call mkdir($CACHE, 'p')
+endif
+if &runtimepath !~# '/dein.vim'
+  let s:dir = 'dein.vim'->fnamemodify(':p')
+  if !(s:dir->isdirectory())
+    let s:dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'
+    if !(s:dir->isdirectory())
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dir
+    endif
+  endif
+  execute 'set runtimepath^='
+        \ .. s:dir->fnamemodify(':p')->substitute('[/\\]$', '', '')
 endif
 
-let s:dein_dir = expand('~/.vim/dein')
-" dein.vim 本体
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-"set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-set runtimepath+=$HOME/.vim/dein/repos/github.com/Shougo/dein.vim
+" AFTER 1
+set nocompatible
+let s:dein_base = '~/.vim/dein'
+let s:dein_src = '~/.vim/dein/repos/github.com/Shougo/dein.vim'
+execute 'set runtimepath+=' .. s:dein_src
+call dein#begin(s:dein_base)
+call dein#add(s:dein_src)
+" AFTER 2
+let s:toml = s:dein_base . '/dein.toml'
+call dein#load_toml(s:toml, {'lazy': 0})
+"
+" AFTER 1
+filetype plugin indent on
+syntax enable
+" syntax on
 
-set runtimepath+=$VIM
-set pythonthreedll=$VIM/python3/python36.dll
-
-" 設定開始
-if dein#load_state(s:dein_dir)
-	call dein#begin(s:dein_dir)
-	" プラグインリストを収めた TOML ファイル
-	let g:rc_dir    = expand('~/.vim/rc')
-	let s:toml      = g:rc_dir . '/dein.toml'
-	let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
-	" TOML を読み込み、キャッシュしておく
-	call dein#load_toml(s:toml,      {'lazy': 0})
-	call dein#load_toml(s:lazy_toml, {'lazy': 1})
-	" 設定終了
-	call dein#end()
-	call dein#save_state()
-endif
-
-" もし、未インストールものものがあったらインストール
+call dein#end()
 if dein#check_install()
 	call dein#install()
 endif
-
+"---------------------------------------------------------------- END dein
+"
 "set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 "call dein#begin(expand('~/.vim/dein'))
 "call dein#add('Shougo/dein.vim')

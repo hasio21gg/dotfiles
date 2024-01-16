@@ -1,8 +1,5 @@
 # 基本は github.com のレポジトリーを指定するだけ
 [[plugins]]
-repo = 'Shougo/dein.vim'
-
-[[plugins]]
 repo = 'fholgado/minibufexpl.vim'
 
 [[plugins]]
