@@ -7,7 +7,7 @@ colorscheme koehler
 if has('win32')
   " Windows—p
   "set guifont=Migu_1M:h9:cSHIFTJIS
-  set guifont=Migu_1M:h11:cSHIFTJIS
+  set guifont=Migu_1M:h12:cSHIFTJIS
   "set guifont=Migu_2M:h10:cSHIFTJIS
   "set guifont=Migu_1C:h9:cSHIFTJIS
   "set guifont=MS_Gothic:h10:cSHIFTJIS
